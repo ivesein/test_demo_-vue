@@ -1,18 +1,44 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="home-page">
+    <el-row>
+      <img src="../assets/logo.png" alt="" />
+    </el-row>
+    <el-row>
+      <el-button type="primary" round @click="goMakeBook">成册Demo</el-button>
+      <el-button type="success" round>成功按钮</el-button>
+      <el-button type="info" round>信息按钮</el-button>
+      <el-button type="warning" round>警告按钮</el-button>
+      <el-button type="danger" round>危险按钮</el-button>
+    </el-row>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+<script type="text/ecmascript-6">
 export default {
-  name: "home",
+  data() {
+    return {
+
+    }
+  },
   components: {
-    HelloWorld
+
+  },
+  methods: {
+    goMakeBook() {
+      this.$router.push({ path: "/make_book" });
+    }
   }
-};
+}
 </script>
+
+<style scoped lang="scss">
+.home-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 100px;
+}
+</style>

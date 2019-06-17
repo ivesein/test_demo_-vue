@@ -19,6 +19,11 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/make_book",
+      name: "MakeBook",
+      component: () => import("./views/MakeBook.vue")
     }
   ]
 });
