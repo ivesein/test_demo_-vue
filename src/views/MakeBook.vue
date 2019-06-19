@@ -63,6 +63,7 @@
 import { tableData } from "utils/data.js";
 import { cutArray } from "utils/cutArray.js";
 import html2canvas from 'html2canvas';
+import { arabiaToSimplifiedChinese } from "utils/arabiaToSimplifiedChinese.js"
 export default {
   data() {
     return {
@@ -75,6 +76,8 @@ export default {
 
   },
   created() {
+    let num = arabiaToSimplifiedChinese("129");
+    console.log("num>>>", num)
     let arr = []
     // if (tableData.length > 58) {
     arr = cutArray(tableData, 58)
@@ -82,14 +85,14 @@ export default {
     for (let i = 0; i < arr.length; i++) {
       arr[i] = cutArray(arr[i], 29)
     }
-    console.log("arr 2>>>", arr)
+    // console.log("arr 2>>>", arr)
     // this.tableData = arr;
     arr.forEach((v1, k1) => {
-      console.log("v1>>>", v1);
+      // console.log("v1>>>", v1);
       let res = null
       let tableData = [];
       v1.forEach((v, k2) => {
-        console.log("v>>>", v)
+        // console.log("v>>>", v)
 
         let markeArr = []
         v.forEach(item => {
@@ -102,7 +105,7 @@ export default {
         })
         res = this.handleData(markeArr)
         // infoArr = Object.assign(this.infoArr, res)
-        console.log("res>>>", res)
+        // console.log("res>>>", res)
         tableData.push({
           table: v,
           remarkInfo: res
@@ -140,7 +143,7 @@ export default {
       }
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      console.log("row>>>", row.index)
+      // console.log("row>>>", row.index)
       //选择要合并的列 此处为第五列
       if (columnIndex === 4) {
         // console.log("this.pageData index>>>", this.pageData[row.index[0]][row.index[1]])
