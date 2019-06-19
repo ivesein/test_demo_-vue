@@ -1,59 +1,61 @@
 <template>
-  <div class="make-book-page">
-    <div class="title">
-      <p @click="screenshot">总目录</p>
-    </div>
-    <div class="table-box" ref="mytable">
-      <div
-        class="table-item table-left"
-        v-for="(item, index) in tableData"
-        :key="index"
-      >
-        <el-table
-          :data="item.table"
-          style="width: 100%"
-          border
-          align="center"
-          :row-class-name="tableRowClassName"
-          :span-method="arraySpanMethod"
-        >
-          <el-table-column
-            align="center"
-            prop="id"
-            label="序号"
-            width="60"
-          ></el-table-column>
-          <el-table-column
-            prop="name"
-            label="名称"
-            header-align="center"
-            align="left"
-          ></el-table-column>
-          <el-table-column
-            prop="mapNum"
-            label="图号"
-            width="140"
-            align="center"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="pageNum"
-            label="页码"
-            width="80"
-            align="center"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="remarks"
-            label="备注"
-            width="180"
-            align="center"
-          >
-          </el-table-column>
-        </el-table>
+  <div class="mune-box">
+    <div class="make-book-page" v-for="(item, index) in pageData" :key="index">
+      <div class="title">
+        <p @click="screenshot">总目录</p>
       </div>
+      <div class="table-box" ref="mytable">
+        <div
+          class="table-item table-left"
+          v-for="(v, index) in item"
+          :key="index"
+        >
+          <el-table
+            :data="v.table"
+            style="width: 100%"
+            border
+            align="center"
+            :row-class-name="tableRowClassName"
+            :span-method="arraySpanMethod"
+          >
+            <el-table-column
+              align="center"
+              prop="id"
+              label="序号"
+              width="60"
+            ></el-table-column>
+            <el-table-column
+              prop="name"
+              label="名称"
+              header-align="center"
+              align="left"
+            ></el-table-column>
+            <el-table-column
+              prop="mapNum"
+              label="图号"
+              width="140"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="pageNum"
+              label="页码"
+              width="80"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="remarks"
+              label="备注"
+              width="180"
+              align="center"
+            >
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+      <img :src="imgSrc" alt="" />
     </div>
-    <img :src="imgSrc" alt="" />
   </div>
 </template>
 
@@ -64,7 +66,7 @@ import html2canvas from 'html2canvas';
 export default {
   data() {
     return {
-      tableData: [],
+      pageData: [],
       infoArr: {},
       imgSrc: ""
     }
@@ -73,24 +75,60 @@ export default {
 
   },
   created() {
-    let arr = cutArray(tableData, 29);
-    arr.forEach((v, k) => {
-      let markeArr = []
-      v.forEach(item => {
-        v.forEach(i => {
-          i.index = k;
+    let arr = []
+    // if (tableData.length > 58) {
+    arr = cutArray(tableData, 58)
+    // console.log("arr 1>>>", arr)
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = cutArray(arr[i], 29)
+    }
+    console.log("arr 2>>>", arr)
+    // this.tableData = arr;
+    arr.forEach((v1, k1) => {
+      console.log("v1>>>", v1);
+      let res = null
+      let tableData = [];
+      v1.forEach((v, k2) => {
+        console.log("v>>>", v)
+
+        let markeArr = []
+        v.forEach(item => {
+          v.forEach((i) => {
+            i.index = [k1, k2];
+          })
+          if (item.remarks != "") {
+            markeArr.push(item.remarks)
+          }
         })
-        if (item.remarks != "") {
-          markeArr.push(item.remarks)
-        }
+        res = this.handleData(markeArr)
+        // infoArr = Object.assign(this.infoArr, res)
+        console.log("res>>>", res)
+        tableData.push({
+          table: v,
+          remarkInfo: res
+        })
       })
-      let res = this.handleData(markeArr)
-      this.infoArr = Object.assign(this.infoArr, res)
-      this.tableData.push({
-        table: v,
-        remarkInfo: res
-      })
-    })
+      this.pageData.push(tableData)
+    });
+    console.log("this.pageData>>>", this.pageData)
+    // let arr = cutArray(tableData, 29);
+    // arr.forEach((v, k) => {
+    //   let markeArr = []
+    //   v.forEach(item => {
+    //     v.forEach(i => {
+    //       i.index = k;
+    //     })
+    //     if (item.remarks != "") {
+    //       markeArr.push(item.remarks)
+    //     }
+    //   })
+    //   let res = this.handleData(markeArr)
+    //   this.infoArr = Object.assign(this.infoArr, res)
+    //   this.tableData.push({
+    //     table: v,
+    //     remarkInfo: res
+    //   })
+    // })
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
@@ -102,13 +140,15 @@ export default {
       }
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
+      console.log("row>>>", row.index)
       //选择要合并的列 此处为第五列
       if (columnIndex === 4) {
-        // console.log("here item>>>", row)
-        for (let i in this.tableData[row.index].remarkInfo) {
+        // console.log("this.pageData index>>>", this.pageData[row.index[0]][row.index[1]])
+        for (let i in this.pageData[row.index[0]][row.index[1]].remarkInfo) {
+          // console.log("i>>>", i)
           if (row.remarks == i) {
             return {
-              rowspan: this.tableData[row.index].remarkInfo[i],
+              rowspan: this.pageData[row.index[0]][row.index[1]].remarkInfo[i],
               colspan: 1
             }
           }
@@ -134,6 +174,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.mune-box {
+  width: 100%;
+  height: auto;
+}
 .make-book-page {
   display: flex;
   flex-direction: column;
