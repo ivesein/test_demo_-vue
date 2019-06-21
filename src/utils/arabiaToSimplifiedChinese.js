@@ -1,6 +1,6 @@
 /**
  *阿拉伯数字转换为简写汉字 最多4位
- *
+ *处理remarks信息中的阿拉伯数字
  * @param {String} Num   字符串整数 "100"
  * @author zfq
  */

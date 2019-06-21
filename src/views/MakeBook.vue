@@ -2,7 +2,7 @@
   <div class="mune-box">
     <div class="make-book-page" v-for="(item, index) in pageData" :key="index">
       <div class="title">
-        <p @click="screenshot">总目录</p>
+        <p @click="getPic">总目录</p>
       </div>
       <div class="table-box" ref="mytable">
         <div
@@ -79,20 +79,14 @@ export default {
     let num = arabiaToSimplifiedChinese("129");
     console.log("num>>>", num)
     let arr = []
-    // if (tableData.length > 58) {
     arr = cutArray(tableData, 58)
-    // console.log("arr 1>>>", arr)
     for (let i = 0; i < arr.length; i++) {
       arr[i] = cutArray(arr[i], 29)
     }
-    // console.log("arr 2>>>", arr)
-    // this.tableData = arr;
     arr.forEach((v1, k1) => {
-      // console.log("v1>>>", v1);
       let res = null
       let tableData = [];
       v1.forEach((v, k2) => {
-        // console.log("v>>>", v)
 
         let markeArr = []
         v.forEach(item => {
@@ -104,8 +98,6 @@ export default {
           }
         })
         res = this.handleData(markeArr)
-        // infoArr = Object.assign(this.infoArr, res)
-        // console.log("res>>>", res)
         tableData.push({
           table: v,
           remarkInfo: res
@@ -114,24 +106,6 @@ export default {
       this.pageData.push(tableData)
     });
     console.log("this.pageData>>>", this.pageData)
-    // let arr = cutArray(tableData, 29);
-    // arr.forEach((v, k) => {
-    //   let markeArr = []
-    //   v.forEach(item => {
-    //     v.forEach(i => {
-    //       i.index = k;
-    //     })
-    //     if (item.remarks != "") {
-    //       markeArr.push(item.remarks)
-    //     }
-    //   })
-    //   let res = this.handleData(markeArr)
-    //   this.infoArr = Object.assign(this.infoArr, res)
-    //   this.tableData.push({
-    //     table: v,
-    //     remarkInfo: res
-    //   })
-    // })
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
@@ -164,13 +138,19 @@ export default {
         return prev;
       }, {});
     },
-    screenshot() {
-      var _this = this
-      console.log("生成图片")
-      html2canvas(document.body).then(function (canvas) {
-        var dataUrl = canvas.toDataURL();
-        _this.imgSrc = dataUrl
-      });
+    async getPic() {
+      this.imgSrc = await this.screenshot(document.body);
+      console.log(this.imgSrc)
+    },
+    screenshot(element) {
+      return new Promise((resolve, reject) => {
+        html2canvas(element).then(function (canvas) {
+          var dataUrl = canvas.toDataURL();
+          resolve(dataUrl)
+        }, err => {
+          reject(err);
+        });
+      })
     }
   }
 }
@@ -189,7 +169,6 @@ export default {
   // flex: 1;
   width: 100%;
   padding: 0 80px 80px 80px;
-  // box-sizing: border-box;
 
   .title {
     width: 100%;
@@ -227,7 +206,11 @@ export default {
 </style>
 <style>
 .el-table {
-  /* border: 1px solid #000; */
+  box-sizing: border-box;
+}
+.el-table--border {
+  border: 1px solid #000;
+  border-right: none;
 }
 
 .el-table .title-row {
