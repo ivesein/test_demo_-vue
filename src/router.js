@@ -24,6 +24,16 @@ export default new Router({
       path: "/make_book",
       name: "MakeBook",
       component: () => import("./views/MakeBook.vue")
+    },
+    {
+      path: "/sign_up",
+      name: "SignUp",
+      component: () => import("./views/SignUp.vue")
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: () => import("./views/Login.vue")
     }
   ]
 });

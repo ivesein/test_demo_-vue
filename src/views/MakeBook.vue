@@ -17,6 +17,7 @@
             align="center"
             :row-class-name="tableRowClassName"
             :span-method="arraySpanMethod"
+            @cell-dblclick="cellDbClick"
           >
             <el-table-column
               align="center"
@@ -36,6 +37,16 @@
               width="140"
               align="center"
             >
+              <template scope="scope">
+                <el-input
+                  v-show="scope.row.canEdit"
+                  v-model="scope.row.mapNum"
+                  @change="handleEdit(scope.$index, scope.row)"
+                  v-on:blur="inputblur(scope.row)"
+                  v-focus
+                ></el-input>
+                <span v-show="!scope.canEdit">{{ scope.row.mapNum }}</span>
+              </template>
             </el-table-column>
             <el-table-column
               prop="pageNum"
@@ -151,6 +162,21 @@ export default {
           reject(err);
         });
       })
+    },
+    cellDbClick(row, column, cell, event) {
+      row.canEdit = row.isTitle ? false : true
+      // row.canEdit = true;
+      console.log(row)
+      console.log(column)
+      console.log(cell)
+      console.log(event)
+    },
+    handleEdit(index, row) {
+      console.log(index)
+      console.log(row)
+    },
+    inputblur(row) {
+      row.canEdit = false
     }
   }
 }
