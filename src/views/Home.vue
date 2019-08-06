@@ -5,8 +5,15 @@
     </el-row>
     <el-row>
       <el-button type="primary" round @click="goMakeBook">成册Demo</el-button>
+      <el-button type="primary" round @click="goFrameSelect"
+        >框选Demo</el-button
+      >
+      <el-button type="primary" round @click="goDragDemo">拖拽Demo</el-button>
       <el-button type="success" round @click="goRegiste">注册</el-button>
       <el-button type="info" round @click="goLogin">登录</el-button>
+      <el-button type="primary" round @click="fullScreenLoading"
+        >全屏加载</el-button
+      >
       <el-button type="warning" round>警告按钮</el-button>
       <el-button type="danger" round>危险按钮</el-button>
     </el-row>
@@ -32,6 +39,24 @@ export default {
     },
     goLogin() {
       this.$router.push({ path: "/login" });
+    },
+    goFrameSelect() {
+      this.$router.push({ path: "/frame_select" });
+    },
+    goDragDemo() {
+      this.$router.push({ path: "/drag_demo" });
+    },
+    fullScreenLoading() {
+      document.documentElement.scrollTop = 0
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 2000);
     }
   }
 }
@@ -40,11 +65,10 @@ export default {
 <style scoped lang="scss">
 .home-page {
   width: 100%;
-  height: 100%;
+  height: 2000px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 60px 100px;
 }
 </style>

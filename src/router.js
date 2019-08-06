@@ -34,6 +34,16 @@ export default new Router({
       path: "/login",
       name: "Login",
       component: () => import("./views/Login.vue")
+    },
+    {
+      path: "/frame_select",
+      name: "FrameSelect",
+      component: () => import("./views/FrameSelect.vue")
+    },
+    {
+      path: "/drag_demo",
+      name: "DragDemo",
+      component: () => import("./views/DragDemo.vue")
     }
   ]
 });
