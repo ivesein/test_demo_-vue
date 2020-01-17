@@ -44,6 +44,21 @@ export default new Router({
       path: "/drag_demo",
       name: "DragDemo",
       component: () => import("./views/DragDemo.vue")
+    },
+    {
+      path: "/to_pdf",
+      name: "ToPdf",
+      component: () => import("./views/ToPdf.vue")
+    },
+    {
+      path: "/table",
+      name: "Table",
+      component: () => import("./views/Table.vue")
+    },
+    {
+      path: "/table2",
+      name: "Table2",
+      component: () => import("./views/Table2.vue")
     }
   ]
 });
